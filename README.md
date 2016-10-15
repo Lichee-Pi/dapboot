@@ -19,6 +19,7 @@ To build other targets, you can override the
 |`BLUEPILL`   | Cheap dev board | http://wiki.stm32duino.com/index.php?title=Blue_Pill |
 |`MAPLEMINI`  | LeafLabs Maple Mini board and clone derivatives | https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki/Maple-and-Maple-mini |
 |`STLINK`     | STLink/v2 hardware clones | https://wiki.paparazziuav.org/wiki/STLink#Clones |
+|`MSC`        | A usb dongle included a NAND flash, mainly for USB encrypted storage device usage | N/A |
 
 ## Flash instructions
 The `make flash` target will use openocd to upload the bootloader to an attached board. By default, the Makefile assumes you're using a [CMSIS-DAP](http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php) based probe, but you can override this by overriding `OOCD_INTERFACE` variable. For example:
@@ -47,7 +48,6 @@ The bootloader currently looks for `0x544F` in RTC backup register 1 and `0x4F42
 ### WebUSB
 This bootloader implements the draft [WebUSB](https://wicg.github.io/webusb/) specification, which allows whitelisted origins to access the bootloader (with explicit user approval) on the following https origins:
 
- * https://devanlai.github.io/
  * https://localhost:8000/
 
 For a demo implementing dfu-util features in the browser, see https://devanlai.github.io/webdfu/dfu-util/

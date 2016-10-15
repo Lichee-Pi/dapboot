@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include <libopencm3/cm3/vector.h>
+#include <libopencm3/stm32/gpio.h>
 
 #include "dapboot.h"
 #include "target.h"
@@ -51,12 +52,21 @@ static void jump_to_application(void) {
 
     /* Jump to the application entry point */
     app_vector_table->reset();
-    
+ #if HAVE_LED
+    {
+        //if (LED_OPEN_DRAIN) {
+            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
+        /*} else {
+            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
+        }*/
+        
+    }
+#endif   
     while (1);
 }
 
 static const char* https_urls[] = {
-    "devanlai.github.io/webdfu/dfu-util/",
+   /* "devanlai.github.io/webdfu/dfu-util/",*/
     "localhost:8000"
 };
 
@@ -68,6 +78,21 @@ int main(void) {
     target_gpio_setup();
 
     if (target_get_force_bootloader() || !validate_application()) {
+#if HAVE_LED
+    {
+        const uint8_t mode = GPIO_MODE_OUTPUT_10_MHZ;
+        const uint8_t conf = (LED_OPEN_DRAIN ? GPIO_CNF_OUTPUT_OPENDRAIN
+                                             : GPIO_CNF_OUTPUT_PUSHPULL);
+	gpio_set_mode(LED_GPIO_PORT, mode, conf, LED_GPIO_PIN);
+
+        //if (LED_OPEN_DRAIN) {
+            gpio_set(LED_GPIO_PORT, LED_GPIO_PIN);
+        /*} else {
+            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
+        }*/
+        
+    }
+#endif
         /* Setup USB */
         {
             char serial[USB_SERIAL_NUM_LENGTH+1];
