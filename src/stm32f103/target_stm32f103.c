@@ -54,15 +54,15 @@ void target_clock_setup(void) {
 
 void target_gpio_setup(void) {
     /* Enable GPIO clocks */
-    if (USES_GPIOA) {
+    #if USES_GPIOA
         rcc_periph_clock_enable(RCC_GPIOA);
-    }
-    if (USES_GPIOB) {
+    #endif
+    #if USES_GPIOB
         rcc_periph_clock_enable(RCC_GPIOB);
-    }
-    if (USES_GPIOC) {
+    #endif
+    #if USES_GPIOC
         rcc_periph_clock_enable(RCC_GPIOC);
-    }
+    #endif
 
     /* Setup LEDs */
 #if HAVE_LED
@@ -85,11 +85,11 @@ void target_gpio_setup(void) {
         const uint8_t conf = (USB_PULLUP_OPEN_DRAIN ? GPIO_CNF_OUTPUT_OPENDRAIN
                                                     : GPIO_CNF_OUTPUT_PUSHPULL);
         /* Configure USB pullup transistor, initially disabled */
-        if (USB_PULLUP_ACTIVE_HIGH) {
+        #if USB_PULLUP_ACTIVE_HIGH
             gpio_clear(USB_PULLUP_GPIO_PORT, USB_PULLUP_GPIO_PIN);
-        } else {
+        #else
             gpio_set(USB_PULLUP_GPIO_PORT, USB_PULLUP_GPIO_PIN);
-        }
+        #endif
         gpio_set_mode(USB_PULLUP_GPIO_PORT, mode, conf, USB_PULLUP_GPIO_PIN);
     }
 #else
@@ -99,6 +99,14 @@ void target_gpio_setup(void) {
                       GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
     }
 #endif
+#if HAVE_BUTTON
+	gpio_set_mode(BUTTON_GPIO_PORT, GPIO_MODE_INPUT, GPIO_CNF_INPUT_PULL_UPDOWN, BUTTON_GPIO_PIN);
+	#if BUTTON_ACTIVE_HIGH
+		gpio_clear(BUTTON_GPIO_PORT, BUTTON_GPIO_PIN);
+        #else
+		gpio_set(BUTTON_GPIO_PORT, BUTTON_GPIO_PIN);
+        #endif
+#endif
 }
 
 const usbd_driver* target_usb_init(void) {
@@ -106,11 +114,11 @@ const usbd_driver* target_usb_init(void) {
 
 #if HAVE_USB_PULLUP_CONTROL
     /* Enable USB pullup to connect */
-    if (USB_PULLUP_ACTIVE_HIGH) {
+    #if USB_PULLUP_ACTIVE_HIGH
         gpio_set(USB_PULLUP_GPIO_PORT, USB_PULLUP_GPIO_PIN);
-    } else {
+    #else
         gpio_clear(USB_PULLUP_GPIO_PORT, USB_PULLUP_GPIO_PIN);
-    }
+    #endif
 #else
     /* Override hard-wired USB pullup to disconnect and reconnect */
     gpio_clear(GPIOA, GPIO12);
@@ -136,15 +144,15 @@ bool target_get_force_bootloader(void) {
 
 #if HAVE_BUTTON
     /* Check if the user button is held down */
-    if (BUTTON_ACTIVE_HIGH) {
+    #if BUTTON_ACTIVE_HIGH
         if (gpio_get(BUTTON_GPIO_PORT, BUTTON_GPIO_PIN)) {
             force = true;
         }
-    } else {
+    #else
         if (!gpio_get(BUTTON_GPIO_PORT, BUTTON_GPIO_PIN)) {
             force = true;
         }
-    }
+    #endif
 #endif
 
     return force;
