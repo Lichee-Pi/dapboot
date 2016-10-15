@@ -15,3 +15,5 @@ GTAGS
 
 # ignore local makefile settings
 src/local.mk
+
+*~

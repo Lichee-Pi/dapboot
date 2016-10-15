@@ -97,10 +97,10 @@ static const struct usb_bos_descriptor bos = {
 static char serial_number[USB_SERIAL_NUM_LENGTH+1];
 
 static const char *usb_strings[] = {
-    "Devanarchy",
-    "DAPBoot DFU Bootloader",
+    "Zhiyuan Wan",
+    "USB DFU Bootloader",
     serial_number,
-    "DAPBoot DFU"
+    "MSCBoot DFU"
 };
 
 /* Buffer to be used for control requests. */
