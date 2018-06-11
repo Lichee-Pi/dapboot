@@ -50,6 +50,8 @@ static const uint32_t CMD_BOOT = 0x544F4F42UL;
 void target_clock_setup(void) {
     /* Set system clock to 72 MHz, base frequency = 24MHz */
 	/* Enable internal high-speed oscillator. */
+	__asm__("cpsid i"); /* 关中断 */
+	
 	rcc_osc_on(RCC_HSI);
 	rcc_wait_for_osc_ready(RCC_HSI);
 
@@ -108,6 +110,7 @@ void target_clock_setup(void) {
 
 void target_gpio_setup(void) {
     /* Enable GPIO clocks */
+    	
     
         rcc_periph_clock_enable(RCC_GPIOA);
         rcc_periph_clock_enable(RCC_GPIOB);
