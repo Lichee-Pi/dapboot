@@ -46,6 +46,13 @@ ifeq ($(TARGET),MSC)
 	LDSCRIPT			:= ./stm32f103/stm32f103x8.ld
 	ARCH				= STM32F1
 endif
+
+ifeq ($(TARGET),TANG)
+	TARGET_COMMON_DIR	:= ./gd32f150
+	TARGET_SPEC_DIR		:= ./gd32f150/tang
+	LDSCRIPT			:= ./gd32f150/gd32f150.ld
+	ARCH				= GD32F150
+endif
 ifndef ARCH
 $(error Unknown target $(TARGET))
 endif

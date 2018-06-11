@@ -16,35 +16,25 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CONFIG_H_INCLUDED
-#define CONFIG_H_INCLUDED
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/rtc.h>
+#include <libopencm3/stm32/pwr.h>
 
-#define APP_BASE_ADDRESS 0x08002000
-#define FLASH_PAGE_SIZE  1024
-#define DFU_UPLOAD_AVAILABLE 0
-#define DFU_DOWNLOAD_AVAILABLE 1
+#include "backup.h"
 
-#define HAVE_LED 1
-#define LED_GPIO_PORT GPIOB
-#define LED_GPIO_PIN  GPIO11
-#define LED_OPEN_DRAIN 0
+#define RTC_BKP_DR(reg)  MMIO32(BACKUP_REGS_BASE + (4 * (reg)))
 
+void backup_write(enum BackupRegister reg, uint32_t value) {
+    rcc_periph_clock_enable(RCC_PWR);
+    //rcc_periph_clock_enable(RCC_BKP);
 
-#define HAVE_USB_PULLUP_CONTROL 1
+    pwr_disable_backup_domain_write_protect();
+    RTC_BKP_DR((int)reg) = value;
+    pwr_enable_backup_domain_write_protect();
+}
 
-#define USB_PULLUP_ACTIVE_HIGH	1
-#define USB_PULLUP_GPIO_PORT	GPIOA
-#define USB_PULLUP_GPIO_PIN	GPIO8
-#define USB_PULLUP_OPEN_DRAIN	0
-
-#define USES_GPIOA	1
-#define USES_GPIOB	1
-
-#define HAVE_BUTTON	1
-#define BUTTON_ACTIVE_HIGH	0
-#define BUTTON_GPIO_PORT	GPIOA
-#define BUTTON_GPIO_PIN		GPIO9
-
-
-
-#endif
+uint32_t backup_read(enum BackupRegister reg) {
+    uint32_t value = RTC_BKP_DR((int)reg);
+    
+    return value;
+}

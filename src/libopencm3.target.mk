@@ -32,6 +32,13 @@ ifeq ($(ARCH),STM32F1)
 	ARCH_FLAGS	= -mthumb -mcpu=cortex-m3 $(FP_FLAGS) -mfix-cortex-m3-ldrd
 	OOCD_BOARD	?= target/stm32f1x.cfg
 endif
+ifeq ($(ARCH),GD32F150)
+	LIBNAME		= opencm3_gd32f150
+	DEFS		+= -DGD32F150
+	FP_FLAGS	?= -msoft-float
+	ARCH_FLAGS	= -mthumb -mcpu=cortex-m3 $(FP_FLAGS) -mfix-cortex-m3-ldrd
+	OOCD_BOARD	?= target/stm32f1x.cfg
+endif
 
 LIBNAME		?= opencm3_stm32f1
 DEFS		?= -DSTM32F1

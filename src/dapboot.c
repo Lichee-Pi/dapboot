@@ -49,26 +49,20 @@ static void jump_to_application(void) {
 
     /* Initialize the application's stack pointer */
     __set_MSP((uint32_t)(app_vector_table->initial_sp_value));
+    
+	gpio_clear(GPIOA, GPIO9); //熄灭LED
 
     /* Jump to the application entry point */
     app_vector_table->reset();
- #if HAVE_LED
-    {
-        //if (LED_OPEN_DRAIN) {
-            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
-        /*} else {
-            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
-        }*/
-        
-    }
-#endif   
     while (1);
 }
 
+#if 0
 static const char* https_urls[] = {
    /* "devanlai.github.io/webdfu/dfu-util/",*/
     "localhost:8000"
 };
+#endif
 
 int main(void) {
     /* Setup clocks */
@@ -78,21 +72,9 @@ int main(void) {
     target_gpio_setup();
 
     if (target_get_force_bootloader() || !validate_application()) {
-#if HAVE_LED
-    {
-        const uint8_t mode = GPIO_MODE_OUTPUT_10_MHZ;
-        const uint8_t conf = (LED_OPEN_DRAIN ? GPIO_CNF_OUTPUT_OPENDRAIN
-                                             : GPIO_CNF_OUTPUT_PUSHPULL);
-	gpio_set_mode(LED_GPIO_PORT, mode, conf, LED_GPIO_PIN);
-
-        //if (LED_OPEN_DRAIN) {
-            gpio_set(LED_GPIO_PORT, LED_GPIO_PIN);
-        /*} else {
-            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
-        }*/
-        
-    }
-#endif
+    
+	GPIO_BSRR(GPIOA) = GPIO9; //点亮LED
+	
         /* Setup USB */
         {
             char serial[USB_SERIAL_NUM_LENGTH+1];
@@ -103,8 +85,8 @@ int main(void) {
 
         usbd_device* usbd_dev = usb_setup();
         dfu_setup(usbd_dev, &target_manifest_app, NULL, NULL);
-        webusb_setup(usbd_dev,
-                     https_urls, sizeof(https_urls)/sizeof(https_urls[0]));
+        //webusb_setup(usbd_dev,
+        //             https_urls, sizeof(https_urls)/sizeof(https_urls[0]));
         winusb_setup(usbd_dev);
         
         while (1) {

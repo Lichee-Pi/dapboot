@@ -97,10 +97,10 @@ static const struct usb_bos_descriptor bos = {
 static char serial_number[USB_SERIAL_NUM_LENGTH+1];
 
 static const char *usb_strings[] = {
-    "Zhiyuan Wan",
-    "USB DFU Bootloader",
+    "Anlogic Technologies",
+    "LicheeTang",
     serial_number,
-    "MSCBoot DFU"
+    "DFU Mode"
 };
 
 /* Buffer to be used for control requests. */

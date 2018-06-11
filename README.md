@@ -20,6 +20,7 @@ To build other targets, you can override the
 |`MAPLEMINI`  | LeafLabs Maple Mini board and clone derivatives | https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki/Maple-and-Maple-mini |
 |`STLINK`     | STLink/v2 hardware clones | https://wiki.paparazziuav.org/wiki/STLink#Clones |
 |`MSC`        | A usb dongle included a NAND flash, mainly for USB encrypted storage device usage | N/A |
+|`TANG`       | An on-board USB to JTAG firmware bootloader for LicheeTang FPGA dev-kit | N/A |
 
 ## Flash instructions
 The `make flash` target will use openocd to upload the bootloader to an attached board. By default, the Makefile assumes you're using a [CMSIS-DAP](http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php) based probe, but you can override this by overriding `OOCD_INTERFACE` variable. For example:

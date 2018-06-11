@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Devan Lai
+ * Copyright (c) 2018, Zhiyuan Wan
  *
  * Permission to use, copy, modify, and/or distribute this software
  * for any purpose with or without fee is hereby granted, provided
@@ -25,16 +25,16 @@
 #define DFU_DOWNLOAD_AVAILABLE 1
 
 #define HAVE_LED 1
-#define LED_GPIO_PORT GPIOB
-#define LED_GPIO_PIN  GPIO11
+#define LED_GPIO_PORT GPIOA
+#define LED_GPIO_PIN  GPIO9
 #define LED_OPEN_DRAIN 0
 
 
 #define HAVE_USB_PULLUP_CONTROL 1
 
 #define USB_PULLUP_ACTIVE_HIGH	1
-#define USB_PULLUP_GPIO_PORT	GPIOA
-#define USB_PULLUP_GPIO_PIN	GPIO8
+#define USB_PULLUP_GPIO_PORT	GPIOB
+#define USB_PULLUP_GPIO_PIN	GPIO3
 #define USB_PULLUP_OPEN_DRAIN	0
 
 #define USES_GPIOA	1
@@ -43,7 +43,7 @@
 #define HAVE_BUTTON	1
 #define BUTTON_ACTIVE_HIGH	0
 #define BUTTON_GPIO_PORT	GPIOA
-#define BUTTON_GPIO_PIN		GPIO9
+#define BUTTON_GPIO_PIN		GPIO1
 
 
 

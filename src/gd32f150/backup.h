@@ -16,35 +16,18 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CONFIG_H_INCLUDED
-#define CONFIG_H_INCLUDED
+#ifndef BACKUP_H_INCLUDED
+#define BACKUP_H_INCLUDED
 
-#define APP_BASE_ADDRESS 0x08002000
-#define FLASH_PAGE_SIZE  1024
-#define DFU_UPLOAD_AVAILABLE 0
-#define DFU_DOWNLOAD_AVAILABLE 1
+enum BackupRegister {
+    BKP0 = 0,
+    BKP1,
+    BKP2,
+    BKP3,
+    BKP4,
+};
 
-#define HAVE_LED 1
-#define LED_GPIO_PORT GPIOB
-#define LED_GPIO_PIN  GPIO11
-#define LED_OPEN_DRAIN 0
-
-
-#define HAVE_USB_PULLUP_CONTROL 1
-
-#define USB_PULLUP_ACTIVE_HIGH	1
-#define USB_PULLUP_GPIO_PORT	GPIOA
-#define USB_PULLUP_GPIO_PIN	GPIO8
-#define USB_PULLUP_OPEN_DRAIN	0
-
-#define USES_GPIOA	1
-#define USES_GPIOB	1
-
-#define HAVE_BUTTON	1
-#define BUTTON_ACTIVE_HIGH	0
-#define BUTTON_GPIO_PORT	GPIOA
-#define BUTTON_GPIO_PIN		GPIO9
-
-
+extern void backup_write(enum BackupRegister reg, uint32_t value);
+extern uint32_t backup_read(enum BackupRegister reg);
 
 #endif
