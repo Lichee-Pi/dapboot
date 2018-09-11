@@ -81,10 +81,10 @@ void target_clock_setup(void) {
 	//flash_set_ws(FLASH_ACR_LATENCY_2WS);
 
 	/*
-	 * Set the PLL multiplication factor to 9.
-	 * 24MHz (external) * 3 (multiplier) = 72MHz
+	 * Set the PLL multiplication factor to 6.
+	 * 12MHz (external) * 6 (multiplier) = 72MHz
 	 */
-	rcc_set_pll_multiplication_factor(RCC_CFGR_PLLMUL_PLL_CLK_MUL3);
+	rcc_set_pll_multiplication_factor(RCC_CFGR_PLLMUL_PLL_CLK_MUL6);
 
 	/* Select HSE as PLL source. */
 	rcc_set_pll_source(RCC_CFGR_PLLSRC_HSE_CLK);
@@ -93,7 +93,8 @@ void target_clock_setup(void) {
 	 * External frequency undivided before entering PLL
 	 * (only valid/needed for HSE).
 	 */
-	rcc_set_pllxtpre(RCC_CFGR_PLLXTPRE_HSE_CLK);
+	//rcc_set_pllxtpre(RCC_CFGR_PLLXTPRE_HSE_CLK);
+	rcc_set_pllxtpre(RCC_CFGR_PLLXTPRE_HSE_CLK_DIV2);//12MHz
 
 	/* Enable PLL oscillator and wait for it to stabilize. */
 	rcc_osc_on(RCC_PLL);
